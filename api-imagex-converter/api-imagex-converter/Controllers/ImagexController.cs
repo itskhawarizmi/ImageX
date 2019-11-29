@@ -4,6 +4,7 @@ using Extensions.DataModels;
 using Files;
 using NReco.ImageGenerator;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -45,6 +46,11 @@ namespace api_imagex_converter.Controllers
         {
             try
             {
+                if (htmlMetaObject.HtmlContent.Contains("\""))
+                {
+                    htmlMetaObject.HtmlContent.Replace("\"", "\'");
+                }
+
                 HtmlToImageConverter imageX = new HtmlToImageConverter
                 {
                     ToolPath = System.Web.HttpContext.Current.Server.MapPath(@"/3rdPartyTool"),
@@ -70,7 +76,7 @@ namespace api_imagex_converter.Controllers
             }
             catch (Exception ex)
             {
-                throw new ArgumentException($"Error Message: {ex.Message}");
+               throw new ArgumentException($"Error Message: {ErrorResponseAsync(ex)}");
             }
 
         }
@@ -81,6 +87,11 @@ namespace api_imagex_converter.Controllers
         {
             try
             {
+                if (htmlMetaObject.HtmlContent.Contains("\""))
+                {
+                    htmlMetaObject.HtmlContent.Replace("\"","\'");
+                }
+
                 HtmlToImageConverter imageX = new HtmlToImageConverter
                 {
                     ToolPath = System.Web.HttpContext.Current.Server.MapPath(@"/3rdPartyTool"),
@@ -106,7 +117,7 @@ namespace api_imagex_converter.Controllers
             }
             catch(Exception ex)
             {
-                throw new ArgumentException($"Error Message: {ex.Message}");
+                throw new ArgumentException($"Error Message: {ErrorResponseAsync(ex)}");
             }
 
         }
@@ -117,6 +128,11 @@ namespace api_imagex_converter.Controllers
         {
             try
             {
+                if (htmlMetaObject.HtmlContent.Contains("\""))
+                {
+                    htmlMetaObject.HtmlContent.Replace("\"", "\'");
+                }
+
                 HtmlToImageConverter imageX = new HtmlToImageConverter
                 {
                     ToolPath = System.Web.HttpContext.Current.Server.MapPath(@"/3rdPartyTool"),
@@ -143,7 +159,7 @@ namespace api_imagex_converter.Controllers
             }
             catch (Exception ex)
             {
-                throw new ArgumentException($"Error Message: {ex.Message}");
+                throw new ArgumentException($"Error Message: {ErrorResponseAsync(ex)}");
             }
         }
 
@@ -154,6 +170,11 @@ namespace api_imagex_converter.Controllers
         {
             try
             {
+                if (htmlMetaObject.HtmlContent.Contains("\""))
+                {
+                    htmlMetaObject.HtmlContent.Replace("\"", "\'");
+                }
+
                 HtmlToImageConverter imageX = new HtmlToImageConverter
                 {
                     ToolPath = System.Web.HttpContext.Current.Server.MapPath(@"/3rdPartyTool"),
@@ -179,9 +200,8 @@ namespace api_imagex_converter.Controllers
             }
             catch(Exception ex)
             {
-                throw new ArgumentException($"Error Message: {ex.Message}");
+                throw new ArgumentException($"Error Message: {ErrorResponseAsync(ex)}");
             }
-
         }
 
         [HttpPost]
@@ -190,6 +210,11 @@ namespace api_imagex_converter.Controllers
         {
             try
             {
+                if (htmlMetaObject.HtmlContent.Contains("\""))
+                {
+                    htmlMetaObject.HtmlContent.Replace("\"", "\'");
+                }
+
                 HtmlToImageConverter imageX = new HtmlToImageConverter
                 {
                     ToolPath = System.Web.HttpContext.Current.Server.MapPath(@"/3rdPartyTool"),
@@ -215,7 +240,7 @@ namespace api_imagex_converter.Controllers
             }
             catch (Exception ex)
             {
-                throw new ArgumentException($"Error Message: {ex.Message}");
+                throw new ArgumentException($"Error Message: {ErrorResponseAsync(ex)}");
             }
 
         }
@@ -226,6 +251,11 @@ namespace api_imagex_converter.Controllers
         {
             try
             {
+                if (htmlMetaObject.HtmlContent.Contains("\""))
+                {
+                    htmlMetaObject.HtmlContent.Replace("\"", "\'");
+                }
+
                 HtmlToImageConverter imageX = new HtmlToImageConverter
                 {
                     ToolPath = System.Web.HttpContext.Current.Server.MapPath(@"/3rdPartyTool"),
@@ -246,15 +276,33 @@ namespace api_imagex_converter.Controllers
 
                 await fileManager.WriteImageByteObjectToFileAsync("imagex-bmp", FileFormat.TXT, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), rawImageObject);
 
-
                 return Response;
             }
             catch(Exception ex)
             {
-                throw new ArgumentException($"Error Message: {ex.Message}");
+                throw new ArgumentException($"Error Message: {ErrorResponseAsync(ex)}");
             }
 
         }
+
+
+        #region Private Helpers
+
+        private async Task<ErrorResponse> ErrorResponseAsync(Exception ex)
+        {
+            var response = new ErrorResponse
+            {
+                Details = ex.StackTrace,
+                Message = ex.Message,
+                Code = (int)HttpStatusCode.BadRequest,
+            };
+
+            await Task.FromResult(response);
+
+            return response;
+        }
+
+        #endregion
 
     }
 }

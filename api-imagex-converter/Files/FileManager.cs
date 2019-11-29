@@ -15,6 +15,8 @@ namespace Files
         public async Task WriteImageByteObjectToFileAsync(string fileName, FileFormat fileFormat, string path, string imageByteObject)
         {
             var normalizeFile = default(string);
+            string currentDateTime = DateTime.Now.ToStringDateISO(isFormatFile:true);
+
 
             try
             {
@@ -30,12 +32,7 @@ namespace Files
                             DirectoryInfo di = Directory.CreateDirectory($"{path}/ImageX");
                         }
 
-                        if(File.Exists($"{normalizeFile.ToFileNormalize(fileName += ("-" + GenerateRandomNumber(10, 1000)), fileFormat)}"))
-                        {
-                            normalizeFile.ToFileNormalize(fileName += ("-" + GenerateRandomNumber(20, 1000)), fileFormat);
-                        }
-
-                        using (var streaWriter = (TextWriter)new StreamWriter(File.Open($"{path}/ImageX/{normalizeFile.ToFileNormalize(fileName += ("-" + GenerateRandomNumber(10, 1000)), fileFormat)}", FileMode.CreateNew)))
+                        using (var streaWriter = (TextWriter)new StreamWriter(File.Open($"{path}/ImageX/{normalizeFile.ToFileNormalize(fileName += ("-" + currentDateTime), fileFormat)}", FileMode.CreateNew)))
                         {
                             streaWriter.Write(imageByteObject);
                         }

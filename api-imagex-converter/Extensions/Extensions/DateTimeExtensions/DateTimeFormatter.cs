@@ -18,6 +18,9 @@ namespace Extensions
                 case DateTimeFormat.LongDateTime:
                     return "yyyy-MM-ddTHH:mm:ss.fff";
 
+                case DateTimeFormat.FileDateTime:
+                    return "yyyy-MM-ddTHH-mm-ss.fff";
+
                 default:
                     return DateTime.Now.ToString();
             }

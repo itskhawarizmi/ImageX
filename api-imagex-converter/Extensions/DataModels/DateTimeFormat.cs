@@ -7,5 +7,7 @@
         LongDateTime = 2,
 
         ShortDateTime = 3,
+
+        FileDateTime = 4,
     }
 }
